@@ -5,3 +5,4 @@ WeatherApplication makes use of MVVM architecture and have a combination of both
 
 The code is well commented for better understanding and well structured. A settings bundle is created for easy testing of location authorization changes and their effect on the application. Size classes are used to handle all combinations. Both unit testcases and UI testcase suite are included, helping with a great code coverage.
 
+Cocoapod dependency is integrated and swiftlint pod is used to help with with proper coding standards.
