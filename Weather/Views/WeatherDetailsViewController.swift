@@ -109,6 +109,7 @@ class WeatherDetailsViewController: UIViewController {
     // MARK: Display the weather details for each ui field
     func populateDatailView() {
         DispatchQueue.main.async {[weak self] in
+            self?.view.endEditing(true)
             self?.searchedCityName.text  = self?.viewModel.getCityName()
             self?.temperature.text  = self?.viewModel.getTemperature()
             self?.weatherDescription.text  = self?.viewModel.getDescription()
@@ -149,7 +150,7 @@ extension WeatherDetailsViewController {
     func hideDetailsView() {
         UIView.animate(withDuration: 0.5, animations: {
             self.detailsStackView.alpha = 0.0
-        }) { (_) in
+        }) { _ in
             self.detailsStackView.isHidden = true
         }
     }
@@ -158,7 +159,7 @@ extension WeatherDetailsViewController {
     func showDetailsView() {
         UIView.animate(withDuration: 0.5, animations: {
             self.detailsStackView.alpha = 1.0
-        }) { (_) in
+        }) { _ in
             self.detailsStackView.isHidden = false
         }
     }
