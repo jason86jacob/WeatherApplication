@@ -30,11 +30,12 @@ class WeatherDetailsViewController: UIViewController {
     @IBOutlet weak var pressureValue: UILabel!
     @IBOutlet weak var windValue: UILabel!
 
-    let viewModel = WeatherDetailsViewModel()
+    var viewModel: WeatherDetailsViewModel!
     private var cancellables: Set<AnyCancellable> = []
 
     override func viewDidLoad() {
         super.viewDidLoad()
+        viewModel = WeatherDetailsViewModel()
         bindProperties()
         displayWeatherDetails()
     }
