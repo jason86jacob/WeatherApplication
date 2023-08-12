@@ -11,14 +11,14 @@ import Security
 @testable import Weather
 
 final class WeatherDetailsViewModelTest: XCTestCase {
-    
+
     var sut: WeatherDetailsViewModel?
-    
+
     override func setUpWithError() throws {
         sut = WeatherDetailsViewModel()
         // Put setup code here. This method is called before the invocation of each test method in the class.
     }
-    
+
     override func tearDownWithError() throws {
         // Put teardown code here. This method is called after the invocation of each test method in the class.
         sut?.errorMessage = ""
@@ -29,7 +29,7 @@ final class WeatherDetailsViewModelTest: XCTestCase {
         ]
         _ = SecItemDelete(query as CFDictionary)
     }
-    
+
     func testFetchWeatherDetailsWithInvalidInputCombination1() {
         sut?.fetchWeatherDetails(cityName: "", completionHandler: {[weak self] in
             XCTAssertEqual(self?.sut?.errorMessage, Constants.ErrorMessages.invalidInputCombination)
@@ -51,17 +51,17 @@ final class WeatherDetailsViewModelTest: XCTestCase {
         })
     }
     func testFetchWeatherDetailsWithInvalidInputCombination5() {
-        sut?.fetchWeatherDetails(cityName: "Riverdale", stateCode: "NY", countryCode: "", completionHandler: {[weak self] in
+    sut?.fetchWeatherDetails(cityName: "Riverdale", stateCode: "NY", countryCode: "", completionHandler: {[weak self] in
             XCTAssertEqual(self?.sut?.errorMessage, Constants.ErrorMessages.invalidInputCombination)
         })
     }
     func testFetchWeatherDetailsWithInvalidInputCombination6() {
-        sut?.fetchWeatherDetails(cityName: "Riverdale", stateCode: "NY", countryCode: nil, completionHandler: {[weak self] in
+sut?.fetchWeatherDetails(cityName: "Riverdale", stateCode: "NY", countryCode: nil, completionHandler: {[weak self] in
             XCTAssertEqual(self?.sut?.errorMessage, Constants.ErrorMessages.invalidInputCombination)
         })
     }
     func testFetchWeatherDetailsWithInvalidInputCombination7() {
-        sut?.fetchWeatherDetails(cityName: "Riverdale", stateCode: "NY", countryCode: "  ", completionHandler: {[weak self] in
+sut?.fetchWeatherDetails(cityName: "Riverdale", stateCode: "NY", countryCode: "  ", completionHandler: {[weak self] in
             XCTAssertEqual(self?.sut?.errorMessage, Constants.ErrorMessages.invalidInputCombination)
         })
     }
@@ -69,21 +69,25 @@ final class WeatherDetailsViewModelTest: XCTestCase {
        XCTAssertFalse(sut?.weatherInputValidationStatusPassed(cityName: "", stateCode: "", countryCode: "") ?? true)
     }
     func testWeatherInputValidationStatusPassedInvalidCombination2() {
-        XCTAssertFalse(sut?.weatherInputValidationStatusPassed(cityName: "  ", stateCode: "KL", countryCode: "IN") ?? true)
+    XCTAssertFalse(sut?.weatherInputValidationStatusPassed(cityName: "  ", stateCode: "KL", countryCode: "IN") ?? true)
     }
     func testWeatherInputValidationStatusPassedInvalidCombination3() {
-        XCTAssertFalse(sut?.weatherInputValidationStatusPassed(cityName: "White Plains", stateCode: "NY", countryCode: "") ?? true)
+        XCTAssertFalse(sut?.weatherInputValidationStatusPassed(cityName: "White Plains",
+                                                               stateCode: "NY", countryCode: "") ?? true)
     }
     func testWeatherInputValidationStatusPassedInvalidCombination4() {
-        XCTAssertFalse(sut?.weatherInputValidationStatusPassed(cityName: "White Plains", stateCode: "NY", countryCode: " ") ?? true)
+        XCTAssertFalse(sut?.weatherInputValidationStatusPassed(cityName: "White Plains",
+                                                       stateCode: "NY", countryCode: " ") ?? true)
     }
     func testWeatherInputValidationStatusPassedValidCombination() {
-        XCTAssertTrue(sut?.weatherInputValidationStatusPassed(cityName: "White Plains", stateCode: "", countryCode: "") ?? false)
+        XCTAssertTrue(sut?.weatherInputValidationStatusPassed(cityName: "White Plains",
+                                                              stateCode: "", countryCode: "") ?? false)
     }
     func testWeatherInputValidationStatusPassedValidCombination1() {
-        XCTAssertTrue(sut?.weatherInputValidationStatusPassed(cityName: "White Plains", stateCode: "NY", countryCode: "USA") ?? false)
+        XCTAssertTrue(sut?.weatherInputValidationStatusPassed(cityName: "White Plains",
+                                                              stateCode: "NY", countryCode: "USA") ?? false)
     }
-    
+
     func testFetchWeatherDetailsWithInvalidCity() {
         let failedAPIcallExpectation = XCTestExpectation(description: "API should fail because of invalid city name")
         sut?.fetchWeatherDetails(cityName: "jkbhdk", completionHandler: {[weak self] in
@@ -99,7 +103,7 @@ final class WeatherDetailsViewModelTest: XCTestCase {
         })
         wait(for: [failedAPIcallExpectation], timeout: 5)
     }
-    
+
     func testFetchWeatherDetailsWithCity() {
         let successAPIcallExpectation = XCTestExpectation(description: "API should pass because of valid city name")
         sut?.fetchWeatherDetails(cityName: "White Plains", completionHandler: {[weak self] in
@@ -118,9 +122,11 @@ final class WeatherDetailsViewModelTest: XCTestCase {
         })
         wait(for: [successAPIcallExpectation], timeout: 5)
     }
-    
+
     func testFetchWeatherUsingCurrentLocation() {
-        let successAPIcallExpectation = XCTestExpectation(description: "API should pass because location services are enabled")
+    let successAPIcallExpectation = XCTestExpectation(description: """
+API should pass because location services are enabled
+""")
         sut?.fetchWeatherUsingCurrentLocation(completionHandler: {[weak self] in
             XCTAssertEqual(self?.sut?.errorMessage, "")
             XCTAssertNotNil(self?.sut?.currentWeatherData[Constants.WeatherData.cityName])
@@ -128,28 +134,27 @@ final class WeatherDetailsViewModelTest: XCTestCase {
         })
         wait(for: [successAPIcallExpectation], timeout: 5)
     }
-    
+
     func testSaveLastSuccessfullySearchedCity() {
         sut?.saveLastSuccessfullySearchedCity("TestCity")
         XCTAssertEqual(sut?.fetchLastSuccessfullySearchedCity(), "TestCity")
     }
-    
+
     func testSaveLastSuccessfullySearchedSameCity() {
         sut?.saveLastSuccessfullySearchedCity("TestCity1")
         sut?.saveLastSuccessfullySearchedCity("TestCity1")
         XCTAssertEqual(sut?.fetchLastSuccessfullySearchedCity(), "TestCity1")
     }
-    
+
     func testUpdateLastSuccessfullySearchedSCity() {
         sut?.saveLastSuccessfullySearchedCity("TestCity1")
         sut?.saveLastSuccessfullySearchedCity("TestCity2")
         XCTAssertEqual(sut?.fetchLastSuccessfullySearchedCity(), "TestCity2")
     }
-    
+
     func testConstructDetailsForDisplayNegative() {
         sut?.constructDetailsForDisplay(nil)
         XCTAssertEqual(sut?.currentWeatherData[Constants.Common.status], Constants.Common.failedStatus)
     }
-    
-}
 
+}

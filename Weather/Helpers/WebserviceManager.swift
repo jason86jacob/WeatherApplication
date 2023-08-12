@@ -3,7 +3,8 @@
 //  Weather
 //
 //  Created by Jason Jacob on 8/9/23.
-// WebserviceManager is a reusable component which can take any url as a string and provide back with the response data to the caller.
+// WebserviceManager is a reusable component which can take
+// any url as a string and provide back with the response data to the caller.
 
 import Foundation
 
@@ -16,7 +17,7 @@ enum APIError: String, Error {
 
 class WebserviceManager {
     // MARK: Calling webservice using URLSession
-    func callWebservice(urlString: String, completionHandler:@escaping ((Result<Data,APIError>) -> Void)) {
+    func callWebservice(urlString: String, completionHandler: @escaping ((Result<Data, APIError>) -> Void)) {
         // Attempt to construct a url from input string
         guard let urlString = urlString.addingPercentEncoding(withAllowedCharacters: .urlQueryAllowed),
               let url = URL(string: urlString) else {
@@ -25,7 +26,7 @@ class WebserviceManager {
             return
         }
         // Call webservice
-        URLSession.shared.dataTask(with: url) { data, response, error in
+        URLSession.shared.dataTask(with: url) { data, _, error in
             // Ensure no error to proceed
             guard error == nil else {
                 // pass custom error back to caller

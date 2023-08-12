@@ -11,16 +11,16 @@ class ImageCacheManager {
     // Singleton Object creation
     static let shared = ImageCacheManager()
     // Image Cache will hold image Data as value
-    private let imageCache = NSCache<NSString,NSData>()
-    
+    private let imageCache = NSCache<NSString, NSData>()
+
     private init() {
-        imageCache.totalCostLimit = 100 * 1024 * 1024 //100 MB
+        imageCache.totalCostLimit = 100 * 1024 * 1024 // 100 MB
         //        imageCache.countLimit = 100 //optional
     }
     // MARK: Method to add image data to Cache
     func addImageDataToCache(imageData: Data, usingKey key: String) {
         imageCache.setObject(imageData as NSData, forKey: key as NSString)
-        
+
     }
     // MARK: Method to retrieve image data from Cache
     func retrieveImageDataFromCacheForKey(_ key: String) -> Data? {

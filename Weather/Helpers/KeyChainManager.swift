@@ -24,7 +24,7 @@ class KeyChainManager {
         }
         return false
     }
-    
+
     // MARK: Method to retrieve a secret based on the key and service provided by the caller
     func fetchSecret(secretService: String, secretKey: String) -> String? {
         let query: [String: Any] = [
@@ -36,14 +36,14 @@ class KeyChainManager {
         ]
         var keychainObj: AnyObject?
         let status = SecItemCopyMatching(query as CFDictionary, &keychainObj)
-        
+
         if status == errSecSuccess, let fetchedSecret = keychainObj as? Data,
            let secretString = String(data: fetchedSecret, encoding: .utf8) {
             return secretString
         }
         return nil
     }
-    
+
     // MARK: Method to update a secret based on the key and service provided by the caller
     func updateSecret(secretService: String, secretKey: String, newSecret: String) -> Bool {
         if deleteSecret(secretService: secretService, secretKey: secretKey) {
